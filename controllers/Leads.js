@@ -1,5 +1,4 @@
 import {Lead} from '../schema/LeadDetail.js'
-// import { Product } from '../schema/ProductSchema.js';
 import Products from '../constant/productData.js';
 // Create Lead
 export const createLead = async (req, res) => {
@@ -50,7 +49,6 @@ export const searchLeads = async (req, res) => {
     try {
         const { name, email, productId, sortBy, order, search } = req.query;
 
-        // Build the query object based on search parameters
         let query = {};
         if (search) {
             const searchRegex = new RegExp(search, 'i');
@@ -58,7 +56,7 @@ export const searchLeads = async (req, res) => {
                 $or: [
                     { name: searchRegex },
                     { email: searchRegex },
-                    { phone: searchRegex }, // Add more fields as needed
+                    { phone: searchRegex }, 
                 ]
             };
         } else {
@@ -67,17 +65,15 @@ export const searchLeads = async (req, res) => {
             if (productId) query.productId = productId;
         }
 
-        // Build sorting options
         const sortOptions = {};
         if (sortBy) sortOptions[sortBy] = order === 'desc' ? -1 : 1;
 
-        // Fetch leads from the database
         const leads = await Lead.find(query).populate('productId').sort(sortOptions);
         const productMap = new Map(Products.map(product => [product._id, product]));
         const leadsWithProducts = leads.map(lead => {
             return {
-              ...lead.toObject(), // Convert Mongoose document to plain object
-              product: productMap.get(lead.productId) // Attach the product details
+              ...lead.toObject(), 
+              product: productMap.get(lead.productId)
             };
           });
         console.log("leadsWithProducts",leadsWithProducts);

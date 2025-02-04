@@ -9,7 +9,6 @@ export const RegisterUser = async (req, res) => {
   try {
     const { UserName, Name, Password, isAdmin } = req.body;
     console.log(UserName);
-    // Password validation checks
        const errors = checks
       .filter(check => !check.regex.test(Password))
       .map(check => check.message);

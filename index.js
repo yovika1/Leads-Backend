@@ -12,7 +12,6 @@ dotenv.config();
 app.use (express.json());
 app.use(cors())
 
-
 app.use(adminUserRoute);
 app.use(forgotUserRoute);
 app.use('/leads',LeadsRoutes);
